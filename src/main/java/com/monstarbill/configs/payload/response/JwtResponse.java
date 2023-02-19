@@ -25,6 +25,7 @@ public class JwtResponse {
 	private boolean isFirstTimeLogin;
 
 	public JwtResponse(String token, Long id, String username, String email, List<String> roles, Long employeeId, Long supplierId, boolean isFirstTimeLogin) {
+		System.out.println("started object preparation");
 		this.token = token;
 		this.id = id;
 		this.username = username;
@@ -33,5 +34,6 @@ public class JwtResponse {
 		this.employeeId = employeeId;
 		this.supplierId = supplierId;
 		this.isFirstTimeLogin = isFirstTimeLogin;
+		System.out.println("Finisheed object preparation");
 	}
 }
