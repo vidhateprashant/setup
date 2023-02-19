@@ -52,15 +52,15 @@ public class ConfigsWsApplication {
 //		return new FeignErrorDecoder();
 //	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-					.allowedOrigins("http://43.205.33.156:8080")
-					.allowedOrigins("http://43.205.33.156:8082");
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**")
+//					.allowedOrigins("http://43.205.33.156:8080")
+//					.allowedOrigins("http://43.205.33.156:8082");
+//			}
+//		};
+//	}
 }
