@@ -77,11 +77,13 @@ public class AuthController {
 		}
 		
 		Long employeeId = this.masterServiceClient.getEmployeeIdByAccessMail(userDetails.getEmail());
+		System.out.println("+========================== :: "+ employeeId);
 		Long supplierId = null;
 		if (employeeId == null) {
 			supplierId = this.masterServiceClient.getSupplierIdByAccessMail(userDetails.getEmail());
 		}
 
+		System.out.println("Before sending response");
 
 		return ResponseEntity.ok(new JwtResponse(jwt, 
 												 userDetails.getId(), 
