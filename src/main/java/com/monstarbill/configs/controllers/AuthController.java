@@ -35,7 +35,7 @@ import com.monstarbill.configs.repository.UserRolesRepository;
 import com.monstarbill.configs.security.jwt.JwtUtils;
 import com.monstarbill.configs.security.service.UserDetailsImpl;
 
-@CrossOrigin //(origins= "*", allowedHeaders = "*", maxAge = 4800, allowCredentials = "false" )
+// @CrossOrigin //(origins= "*", allowedHeaders = "*", maxAge = 4800, allowCredentials = "false" )
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
