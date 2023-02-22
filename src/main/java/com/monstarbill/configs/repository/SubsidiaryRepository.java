@@ -40,4 +40,6 @@ public interface SubsidiaryRepository extends JpaRepository<Subsidiary, String> 
 	
 	@Query(" SELECT currency FROM Subsidiary where lower(name) = lower(:subsidiaryName) AND isDeleted = :isDeleted ")
 	public String findCurrencyByNameAndIsDeleted(String subsidiaryName, boolean isDeleted);
+
+	public Subsidiary findFiscalCalenderById(Long subsidiaryId);
 }

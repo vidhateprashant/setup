@@ -29,5 +29,7 @@ public interface FiscalCalanderService {
 
 	public List<FiscalCalenderHistory> findHistoryById(Long id, Pageable pageable);
 
+	public FiscalCalender getFiscalCalanderBySubsidiaryId(Long subsidiaryId);
+
 
 }

@@ -19,7 +19,7 @@ public interface DocumentSequenceRepository extends JpaRepository<DocumentSequen
 
 	public Optional<DocumentSequence> getBySubsidiaryIdAndTypeAndIsDeleted(Long subsidiaryId, String type, boolean isDeleted);
 	
-	@Query("SELECT c from DocumentSequence c where to_char(startDate, 'yyyy-MM-dd') <= :transactionalDate and to_char(endDate, 'yyyy-MM-dd') >= :transactionalDate and subsidiaryId = :subsidiaryId and type = :type and isDeleted = :isDeleted ")
+	@Query("SELECT c from DocumentSequence c where to_char(startDate, 'yyyy-MM-dd') <= :transactionalDate and to_char(endDate, 'yyyy-MM-dd') >= :transactionalDate and subsidiaryId = :subsidiaryId and lower(type) = lower(:type) and isDeleted = :isDeleted ")
 	public Optional<DocumentSequence> findBySubsidiaryIdAndTypeAndisDeleted(
 			@Param("transactionalDate") String transactionalDate, @Param("subsidiaryId") Long subsidiaryId,
 			@Param("type") String type, @Param("isDeleted") boolean isDeleted);

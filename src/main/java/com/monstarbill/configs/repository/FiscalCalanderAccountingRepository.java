@@ -17,4 +17,6 @@ public interface FiscalCalanderAccountingRepository extends JpaRepository<Fiscal
 	@Query(" select new com.monstarbill.configs.models.FiscalCalanderAccounting(id, yearName, fiscalId, startYear ,endYear ,month , fromDate, toDate, isLock, isPeriodOpen, isPeriodClose, isYearCompleted) from FiscalCalanderAccounting ORDER BY id asc ")
 	public List<FiscalCalanderAccounting> findAllAccounting();
 
+	public List<FiscalCalanderAccounting> findByFiscalIdAndIsPeriodOpen(Long fiscalId, boolean isPeriodOpen);
+
 }

@@ -29,11 +29,13 @@ import com.monstarbill.configs.enums.Operation;
 import com.monstarbill.configs.models.FiscalCalanderAccounting;
 import com.monstarbill.configs.models.FiscalCalender;
 import com.monstarbill.configs.models.FiscalCalenderHistory;
+import com.monstarbill.configs.models.Subsidiary;
 import com.monstarbill.configs.payload.request.PaginationRequest;
 import com.monstarbill.configs.payload.response.PaginationResponse;
 import com.monstarbill.configs.repository.FiscalCalanderAccountingRepository;
 import com.monstarbill.configs.repository.FiscalCalanderRepository;
 import com.monstarbill.configs.repository.FiscalCalenderHistoryRepository;
+import com.monstarbill.configs.repository.SubsidiaryRepository;
 import com.monstarbill.configs.service.FiscalCalanderService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +50,9 @@ public class FiscalCalanderServiceImpl implements FiscalCalanderService {
 
 	@Autowired
 	private FiscalCalenderDao fiscalCalenderDao;
+	
+	@Autowired
+	private SubsidiaryRepository subsidiaryRepository;
 
 	@Autowired
 	private FiscalCalanderAccountingRepository fiscalCalanderAccountingRepository;
@@ -387,6 +392,25 @@ public class FiscalCalanderServiceImpl implements FiscalCalanderService {
 	@Override
 	public List<FiscalCalenderHistory> findHistoryById(Long id, Pageable pageable) {
 		return this.fiscalCalenderHistoryRepository.findByFiscalCalenderId(id, pageable);
+	}
+
+	@Override
+	public FiscalCalender getFiscalCalanderBySubsidiaryId(Long subsidiaryId) {
+		FiscalCalender fiscalCalender = new FiscalCalender();
+		Subsidiary fiscalCalenderBySubsidiary = this.subsidiaryRepository.findFiscalCalenderById(subsidiaryId);
+		if(fiscalCalenderBySubsidiary==null){
+			log.error(" There is no fiscal calneder by this subsidiary : " );
+			throw new CustomMessageException(" There is no fiscal calneder by this subsidiary : " );
+		}
+			//Long fiscalId = this.fiscalCalanderRepository.findIdByName(fiscalCalenderBySubsidiary.getFiscalCalender());
+			fiscalCalender = this.fiscalCalanderRepository.findByName(fiscalCalenderBySubsidiary.getFiscalCalender());
+			//List<FiscalCalanderAccounting> fiscalCalanderAccountings = fiscalCalender.getFiscalCalanderAccounting();
+			Long fiscalId = fiscalCalender.getId();
+			log.info(" fiscal id " + fiscalId);
+			List<FiscalCalanderAccounting>fiscalCalanderAccountings = this.fiscalCalanderAccountingRepository.findByFiscalIdAndIsPeriodOpen(fiscalId, true);
+			fiscalCalender.setFiscalCalanderAccounting(fiscalCalanderAccountings);
+			
+		return fiscalCalender;
 	}
 
 }

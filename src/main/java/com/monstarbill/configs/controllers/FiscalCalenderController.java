@@ -172,4 +172,21 @@ public class FiscalCalenderController {
 		log.info("Returning from fiscal calender Audit by id.");
 		return new ResponseEntity<>(fiscalCalenderHistoris, HttpStatus.OK);
 	}
+	
+	/**
+	 * get the fiscal data by subsidiary id
+	 * 
+	 * @param subsidiary id
+	 * @return
+	 */
+	@GetMapping("/get-by-subsidairy-id")
+	public ResponseEntity<FiscalCalender> findBySubsidiaryId(@RequestParam Long subsidiaryId) {
+		log.info("Get Fiscal Calender for ID :: " + subsidiaryId);
+		FiscalCalender fiscalCalander = fiscalCalanderService.getFiscalCalanderBySubsidiaryId(subsidiaryId);
+		if (fiscalCalander == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		log.info("Returning from find by subsidiary id Fiscal Calender");
+		return new ResponseEntity<>(fiscalCalander, HttpStatus.OK);
+	}
 }
