@@ -205,4 +205,9 @@ public class SubsidiaryController {
 	public ResponseEntity<String> findCurrencyBySubsidiaryName(@RequestParam String name) {
 		return new ResponseEntity<>(this.subsidiaryService.findCurrencyBySubsidiaryName(name), HttpStatus.OK);
 	}
+	
+	@GetMapping("/get-logged-username")
+	public ResponseEntity<String> getLoggedInUsername() {
+		return new ResponseEntity<>(this.subsidiaryService.getLoggedInUsername(), HttpStatus.OK);
+	}
 }

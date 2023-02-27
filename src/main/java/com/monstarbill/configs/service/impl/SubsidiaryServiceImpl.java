@@ -422,4 +422,9 @@ public class SubsidiaryServiceImpl implements SubsidiaryService {
 	public String findCurrencyBySubsidiaryName(String subsidiaryName) {
 		return this.subsidiaryRepository.findCurrencyByNameAndIsDeleted(subsidiaryName, false);
 	}
+
+	@Override
+	public String getLoggedInUsername() {
+		return CommonUtils.getLoggedInUsername();
+	}
 }

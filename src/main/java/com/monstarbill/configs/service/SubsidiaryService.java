@@ -45,4 +45,6 @@ public interface SubsidiaryService {
 
 	public String findCurrencyBySubsidiaryName(String subsidiaryName);
 
+	public String getLoggedInUsername();
+
 }
