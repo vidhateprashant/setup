@@ -133,4 +133,8 @@ public class AppConstants {
 	public static final String APPROVAL_TYPE_CHAIN = "CHAIN";
 	public static final String APPROVAL_TYPE_INDIVIDUAL = "INDIVIDUAL";
 
+	// CompanyData
+	public static final String COMPANY_DATA = "Company Data";
+	public static final String COMPANY_DATA_ADDRESS = "Company Data Address";
+
 }
