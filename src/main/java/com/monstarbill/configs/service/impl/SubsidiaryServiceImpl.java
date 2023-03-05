@@ -340,8 +340,8 @@ public class SubsidiaryServiceImpl implements SubsidiaryService {
 	 * To get list(id, name) only to display in the Dropdown
 	 */
 	@Override
-	public Map<Long, String> getSubsidiaries() {
-		return this.subsidiaryRepository.findIdAndNameMap(false);
+	public Map<Long, String> getSubsidiaries(String accountId) {
+		return this.subsidiaryRepository.findIdAndNameMap(accountId, false);
 	}
 
 	@Override

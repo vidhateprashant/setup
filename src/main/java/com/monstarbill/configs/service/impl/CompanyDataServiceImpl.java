@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,15 @@ import com.monstarbill.configs.common.AppConstants;
 import com.monstarbill.configs.common.CommonUtils;
 import com.monstarbill.configs.common.CustomException;
 import com.monstarbill.configs.enums.Operation;
+import com.monstarbill.configs.feingclients.MasterServiceClient;
 import com.monstarbill.configs.models.CompanyData;
 import com.monstarbill.configs.models.CompanyDataHistory;
+import com.monstarbill.configs.models.CustomRoles;
+import com.monstarbill.configs.models.DefaultRolePermissions;
+import com.monstarbill.configs.models.Employee;
+import com.monstarbill.configs.models.EmployeeAccess;
+import com.monstarbill.configs.models.EmployeeRole;
+import com.monstarbill.configs.models.RolePermissions;
 import com.monstarbill.configs.repository.CompanyDataHistoryRepository;
 import com.monstarbill.configs.repository.CompanyDataRepository;
 import com.monstarbill.configs.service.CompanyDataService;
@@ -31,6 +39,9 @@ public class CompanyDataServiceImpl implements CompanyDataService {
 
 	@Autowired
 	private CompanyDataHistoryRepository companyDataHistoryRepository;
+
+	@Autowired
+	private MasterServiceClient masterServiceClient;
 
 	@Override
 	public CompanyData save(CompanyData companyData) {
@@ -121,6 +132,50 @@ public class CompanyDataServiceImpl implements CompanyDataService {
 		companyDataHistory.setNewValue(newValue);
 		companyDataHistory.setLastModifiedBy(lastModifiedBy);
 		return companyDataHistory;
+	}
+
+	@Override
+	public CompanyData createDatabase(CompanyData companyData) {
+		String accountId = companyData.getAccountId();
+		if (StringUtils.isEmpty(accountId)) {
+			throw new CustomException("Account ID Should not be empty. Please generate Account ID.");
+		}
+		
+		CustomRoles role = this.generateDefaultRoleWithAccount(accountId);
+		Employee employee = this.generateDefaultEmployeeWithAccount(companyData, role);
+		companyData.setEmployee(employee);
+		
+		return companyData;
+	}
+
+	private Employee generateDefaultEmployeeWithAccount(CompanyData companyData, CustomRoles role) {
+		List<EmployeeRole> employeeRoles = new ArrayList<EmployeeRole>();
+		EmployeeRole employeeRole = new EmployeeRole(role.getId(), role.getName());
+		employeeRoles.add(employeeRole);
+		
+		EmployeeAccess employeeAccess = new EmployeeAccess(true, companyData.getEmail(), "123", employeeRoles);
+		Employee employee = new Employee("Manager", companyData.getCompanyName(), employeeAccess, companyData.getAccountId());
+		
+		employee = this.masterServiceClient.saveEmployee(employee);
+		
+		return employee;
+	}
+
+	private CustomRoles generateDefaultRoleWithAccount(String accountId) {
+		CustomRoles customRole = new CustomRoles(accountId, "Default Admin Role", true, "ADMIN_APPROVER");
+		
+		// find the all access for admin-approver
+		List<DefaultRolePermissions> defaultRolePermissions = new ArrayList<DefaultRolePermissions>();
+		List<RolePermissions> rolePermissions = new ArrayList<RolePermissions>();
+		defaultRolePermissions = masterServiceClient.findAccessPointBySelectedAccess("ADMIN");
+		for (DefaultRolePermissions defaultRolePermission : defaultRolePermissions) {
+			RolePermissions rolePermission = new RolePermissions(defaultRolePermission.getModuleName(), defaultRolePermission.getAccessPoint(), defaultRolePermission.isCreate(), defaultRolePermission.isEdit(), defaultRolePermission.isView());
+			rolePermissions.add(rolePermission);
+		}
+		
+		customRole.setRolePermissions(rolePermissions);
+		customRole = this.masterServiceClient.saveCustomRole(customRole);
+		return customRole;
 	}
 
 }

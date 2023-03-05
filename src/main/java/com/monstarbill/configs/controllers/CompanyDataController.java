@@ -80,4 +80,11 @@ public class CompanyDataController {
 		return ResponseEntity.ok(companyDataHistories);
 	}
 
+	@PostMapping("/create-database")
+	public ResponseEntity<CompanyData> createDatabase(@Valid @RequestBody CompanyData companyData) {
+		log.info("Saving the create-database: " + companyData.toString());
+		companyData = companyDataService.createDatabase(companyData);
+		log.info("create-database saved successfully");
+		return ResponseEntity.ok(companyData);
+	}
 }

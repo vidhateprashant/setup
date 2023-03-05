@@ -51,6 +51,9 @@ public class Subsidiary implements Cloneable {
 	@NotBlank(message = "Name is mandatory")
 	@Column(nullable = false, updatable = false, unique = true)
 	private String name;
+	
+	@Column(name = "account_id")
+	private String accountId;
 
 	@Column(name="legal_name")
 	private String legalName;

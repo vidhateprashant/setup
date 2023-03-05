@@ -641,4 +641,13 @@ public class PreferencesServiceImpl implements PreferencesService {
 		return this.approvalRoutingPreferenceRepository.findRoutingByStatus(subsidiaryId, formType, isRoutingActive);
 	}
 
+	@Override
+	public Boolean isCrossCurrencyActiveBySubsidiary(Long subsidiaryId) {
+		List<OtherPreference> preferences = this.otherPreferenceRepository.findPreferenceActiveForCrossCurrenyBySubsidiary(subsidiaryId);
+		if (CollectionUtils.isEmpty(preferences)) {
+			return false;
+		}
+		return preferences.get(0).isPreferenceActive();
+	}
+
 }

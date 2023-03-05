@@ -20,16 +20,16 @@ public interface SubsidiaryRepository extends JpaRepository<Subsidiary, String> 
 	
 	public Optional<Subsidiary> findByIdAndIsDeleted(Long id, boolean isDeleted);
 	
-	@Query("select new com.monstarbill.configs.models.Subsidiary(id, name, parentCompany, currency, createdDate) from Subsidiary Where isDeleted = :isDeleted order by name asc ")
-	public List<Subsidiary> getAllWithFieldsAndDeleted(@Param("isDeleted") boolean isDeleted);
+	@Query("select new com.monstarbill.configs.models.Subsidiary(id, name, parentCompany, currency, createdDate) from Subsidiary Where isDeleted = :isDeleted AND accountId = :accountId order by name asc ")
+	public List<Subsidiary> getAllWithFieldsAndDeleted(@Param("accountId") String accountId, @Param("isDeleted") boolean isDeleted);
 	
 	@Query("select new com.monstarbill.configs.models.Subsidiary(id, name, parentCompany, currency, createdDate) from Subsidiary "
 			+ " where CREATED_DATE > to_date(:startDate,'YYYY-MM-DD') AND CREATED_DATE < to_date(:endDate,'YYYY-MM-DD') AND isDeleted = :isDeleted "
 			+ " order by name asc ")
 	public List<Subsidiary> getAllWithFieldsAndDeletedFilters(@Param("startDate") String startDate, @Param("endDate") String endDate, @Param("isDeleted") boolean isDeleted);
 	
-	default Map<Long, String> findIdAndNameMap(boolean isDeleted) {
-        return this.getAllWithFieldsAndDeleted(isDeleted).stream().collect(Collectors.toMap(Subsidiary::getId, Subsidiary::getName));
+	default Map<Long, String> findIdAndNameMap(String accountId, boolean isDeleted) {
+        return this.getAllWithFieldsAndDeleted(accountId, isDeleted).stream().collect(Collectors.toMap(Subsidiary::getId, Subsidiary::getName));
     }
 
 	@Query("select count(id) from Subsidiary where lower(name) = lower(:name) AND isDeleted = false ")

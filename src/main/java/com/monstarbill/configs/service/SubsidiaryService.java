@@ -35,7 +35,7 @@ public interface SubsidiaryService {
 
 	public Subsidiary getSubsidiaryAndActiveAddressById(Long id);
 
-	public Map<Long, String> getSubsidiaries();
+	public Map<Long, String> getSubsidiaries(String accountId);
 
 	public Boolean getValidateName(String name);
 

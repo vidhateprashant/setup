@@ -23,4 +23,6 @@ public interface PreferencesService {
 
 	public List<String> findRoutingByStatus(Long subsidiaryId, String formType, String status);
 
+	public Boolean isCrossCurrencyActiveBySubsidiary(Long subsidiaryId);
+
 }

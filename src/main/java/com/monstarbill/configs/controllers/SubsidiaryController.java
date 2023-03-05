@@ -172,8 +172,8 @@ public class SubsidiaryController {
 	 * @return
 	 */
 	@GetMapping("/get/all/lov")
-	public ResponseEntity<Map<Long, String>> getAllSubsidiariesForLov() {
-		return new ResponseEntity<>(subsidiaryService.getSubsidiaries(), HttpStatus.OK);
+	public ResponseEntity<Map<Long, String>> getAllSubsidiariesForLov(@RequestParam String accountId) {
+		return new ResponseEntity<>(subsidiaryService.getSubsidiaries(accountId), HttpStatus.OK);
 	}
 
 	@GetMapping("/is-valid-name")

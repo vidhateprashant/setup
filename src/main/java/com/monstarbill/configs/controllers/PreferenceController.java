@@ -101,5 +101,12 @@ public class PreferenceController {
 		log.info("Get approval-routing-by-status - FINISHED :: " + status);
 		return new ResponseEntity<>(activeFormNames, HttpStatus.OK);
 	}
-
+	
+	@GetMapping("/get-cross-currency-active-by-subsidiary")
+	public ResponseEntity<Boolean> isCrossCurrencyActiveBySubsidiary(@RequestParam Long subsidiaryId) {
+		log.info("Get cross-currency-active-by-subsidiary - STARTED :: " + subsidiaryId);
+		Boolean isCrossCurrencyActive = this.preferencesService.isCrossCurrencyActiveBySubsidiary(subsidiaryId);
+		log.info("Get cross-currency-active-by-subsidiary- FINISHED :: " + subsidiaryId);
+		return new ResponseEntity<>(isCrossCurrencyActive, HttpStatus.OK);
+	}
 }

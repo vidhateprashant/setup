@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -116,6 +117,9 @@ public class CompanyData implements Cloneable {
 
 	@Column(name = "last_modified_by")
 	private String lastModifiedBy;
+	
+	@Transient
+	private Employee employee;
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
