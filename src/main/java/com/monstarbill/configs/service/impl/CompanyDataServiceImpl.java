@@ -50,8 +50,7 @@ public class CompanyDataServiceImpl implements CompanyDataService {
 
 		if (companyData.getId() == null) {
 			companyData.setCreatedBy(username);
-			companyData.setAccountId(UUID.randomUUID().toString().substring(0, 16).replace("-", "") + "-"
-					+ companyData.getCompanyName());
+			companyData.setAccountId(UUID.randomUUID().toString().substring(0, 16).replace("-", ""));
 		} else {
 			oldCompanyData = this.companyDataRepository.findByIdAndIsDeleted(companyData.getId(), false);
 			if (oldCompanyData.isPresent()) {
@@ -141,7 +140,7 @@ public class CompanyDataServiceImpl implements CompanyDataService {
 			throw new CustomException("Account ID Should not be empty. Please generate Account ID.");
 		}
 		
-		CustomRoles role = this.generateDefaultRoleWithAccount(accountId);
+		CustomRoles role = this.generateDefaultRoleWithAccount(accountId, companyData.getCompanyName());
 		Employee employee = this.generateDefaultEmployeeWithAccount(companyData, role);
 		companyData.setEmployee(employee);
 		
@@ -161,8 +160,8 @@ public class CompanyDataServiceImpl implements CompanyDataService {
 		return employee;
 	}
 
-	private CustomRoles generateDefaultRoleWithAccount(String accountId) {
-		CustomRoles customRole = new CustomRoles(accountId, "Default Admin Role", true, "ADMIN_APPROVER");
+	private CustomRoles generateDefaultRoleWithAccount(String accountId, String companyName) {
+		CustomRoles customRole = new CustomRoles(accountId, companyName + " " + accountId.substring(accountId.length() - 4) + " Admin", true, "ADMIN_APPROVER");
 		
 		// find the all access for admin-approver
 		List<DefaultRolePermissions> defaultRolePermissions = new ArrayList<DefaultRolePermissions>();
